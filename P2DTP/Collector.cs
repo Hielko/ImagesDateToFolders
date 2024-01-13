@@ -3,14 +3,13 @@ using SixLabors.ImageSharp.Metadata.Profiles.Exif;
 
 namespace P2DTP
 {
-    public class Worker
+    public class Collector
     {
-        public Worker(List<FileInfo> files, out List<Result> result)
+        public Collector(List<FileInfo> files, out List<FileAndDate> fileAndDateList)
         {
-            result = new List<Result>();
+            fileAndDateList = new List<FileAndDate>();
             foreach (FileInfo file in files)
             {
-
                 if (Utils.IsImageExtenstion(file.FullName))
                 {
                     using (Image image = Image.Load(file.FullName))
@@ -26,11 +25,11 @@ namespace P2DTP
                                     if (DateTime.TryParse(correctDate, out DateTime date))
                                     {
                                         Console.WriteLine(date);
-                                        result.Add(new Result { ExifDate = date, file = file });
+                                        fileAndDateList.Add(new FileAndDate { DateForNewPath = date, File = file });
                                     }
                                     else
                                     {
-                                        result.Add(new Result { ExifDate = file.CreationTime, file = file });
+                                        fileAndDateList.Add(new FileAndDate { DateForNewPath = file.CreationTime, File = file });
                                         // Console.WriteLine("Invalid date " + ExifStringDate.ToString());
                                     }
                                 }

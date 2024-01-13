@@ -2,7 +2,7 @@
   "profiles": {
     "P2DTP": {
       "commandName": "Project",
-      "commandLineArgs": "-s \"s:/test\" -d s:/testimg -f \"MM dd yyyy HH mm\""
+      "commandLineArgs": "-s \"s:/test\" -d s:/testimg -f \"yyyy MM-MMMM\""
     }
   }
 }

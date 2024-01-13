@@ -2,7 +2,7 @@
 {
     public class GetOpt
     {
-        string[] args;
+        readonly string[] args;
 
         public GetOpt(string[] args)
         {

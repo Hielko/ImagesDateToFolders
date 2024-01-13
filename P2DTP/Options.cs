@@ -2,7 +2,7 @@
 {
     public class Options
     {
-        public string? Format { get; set; }
-        public string? Desination { get; set; }
+        public string? DateFormat { get; set; }
+        public string? DestinationPath { get; set; }
     }
 }

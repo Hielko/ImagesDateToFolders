@@ -8,7 +8,7 @@ namespace P2DTP
 {
     public class Files
     {
-        public List<FileInfo> GetFiles(string[] paths, string wildcard = "*.*")
+        public static List<FileInfo> GetFiles(string[] paths, string wildcard = "*.*")
         {
             var files = new List<FileInfo>();
 

@@ -9,8 +9,8 @@ var options = new Options();
 
 if (!argOptions.TryGetValue("-s", out var sourcePath))
 {
-    Console.WriteLine("No -s specified");
-    return;
+    sourcePath = currentDir;
+    Console.WriteLine($"No -s specified, use {currentDir}");
 }
 
 
@@ -18,33 +18,31 @@ string[] paths = new string[] { sourcePath };
 
 if (!argOptions.TryGetValue("-d", out var desination))
 {
-    Console.WriteLine("No -d specified");
+    Console.WriteLine("No -d specified, exit");
     return;
 }
-options.Desination = desination;
+options.DestinationPath = desination;
 
 
 if (!argOptions.TryGetValue("-f", out var format))
 {
-    format = "yyyy MMMM";
+    format = "yyyy MM";
+    Console.WriteLine($"No -f specified, using {format}");
 }
-options.Format = format;
-
-
+options.DateFormat = format;
 
 
 Console.WriteLine("Paths: ");
 foreach (string path in paths) { Console.Write(path + " "); }
 Console.WriteLine();
 
-var files = new Files().GetFiles(paths);
+var files = Files.GetFiles(paths);
 Console.WriteLine($"Files: {files.Count}");
 
-List<Result> result = new List<Result>();
+List<FileAndDate> result = new List<FileAndDate>();
 
-new Worker(files, out result);
+new Collector(files, out result);
 
 new CopyFiles(result, options);
 
 Console.WriteLine($"Done");
-
