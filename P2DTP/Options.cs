@@ -2,7 +2,9 @@
 {
     public class Options
     {
-        public string? DateFormat { get; set; }
+        public static string DefaultDateFormat = "yyyy MM";
+
+        public string? DateFormat { get; set; } = Options.DefaultDateFormat;
         public string? DestinationPath { get; set; }
     }
 }

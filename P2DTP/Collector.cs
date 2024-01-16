@@ -12,30 +12,34 @@ namespace P2DTP
             {
                 if (Utils.IsImageExtenstion(file.FullName))
                 {
-                    using (Image image = Image.Load(file.FullName))
+                    try
                     {
-                        if (image.Metadata.ExifProfile != null)
+                        using (Image image = Image.Load(file.FullName))
                         {
-                            if (image.Metadata.ExifProfile.TryGetValue(ExifTag.DateTime, out var ExifStringDate))
+                            if (image.Metadata.ExifProfile != null)
                             {
-                                if (ExifStringDate != null)
+                                if (image.Metadata.ExifProfile.TryGetValue(ExifTag.DateTime, out var ExifStringDate))
                                 {
-                                    var correctDate = ExifStringDate?.ToString()?.Substring(0, 10).Replace(":", "/") + ExifStringDate?.ToString()?.Substring(10, 9);
+                                    if (ExifStringDate != null)
+                                    {
+                                        var correctDate = ExifStringDate?.ToString()?.Substring(0, 10).Replace(":", "/") + ExifStringDate?.ToString()?.Substring(10, 9);
 
-                                    if (DateTime.TryParse(correctDate, out DateTime date))
-                                    {
-                                        Console.WriteLine(date);
-                                        fileAndDateList.Add(new FileAndDate { DateForNewPath = date, File = file });
-                                    }
-                                    else
-                                    {
-                                        fileAndDateList.Add(new FileAndDate { DateForNewPath = file.CreationTime, File = file });
-                                        // Console.WriteLine("Invalid date " + ExifStringDate.ToString());
+                                        if (DateTime.TryParse(correctDate, out DateTime date))
+                                        {
+                                            Console.WriteLine(date);
+                                            fileAndDateList.Add(new FileAndDate { DateForNewPath = date, File = file });
+                                        }
+                                        else
+                                        {
+                                            fileAndDateList.Add(new FileAndDate { DateForNewPath = file.CreationTime, File = file });
+                                            // Console.WriteLine("Invalid date " + ExifStringDate.ToString());
+                                        }
                                     }
                                 }
                             }
                         }
-                    }
+                    } catch (Exception e)
+                        {  }
                 }
             }
         }

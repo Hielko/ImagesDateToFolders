@@ -26,7 +26,7 @@ options.DestinationPath = desination;
 
 if (!argOptions.TryGetValue("-f", out var format))
 {
-    format = "yyyy MM";
+    format =  Options.DefaultDateFormat;
     Console.WriteLine($"No -f specified, using {format}");
 }
 options.DateFormat = format;
