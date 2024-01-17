@@ -4,13 +4,12 @@ namespace Tests
 {
     public class Tests
     {
-
         Options options;
 
         [SetUp]
         public void Setup()
         {
-            options = new Options { DestinationPath = "" };
+            options = new Options { };
         }
 
         [Test]
@@ -23,16 +22,20 @@ namespace Tests
             string[] paths = new string[1] { samplesPath };
             options.DestinationPath = Path.Combine(solution_dir, "Result");
 
-            var files = Files.GetFiles(paths);
+            var files = new Files().GetFiles(paths);
 
             var result = new List<FileAndDate>();
 
             new Collector(files, out result);
-
             new CopyFiles(result, options);
 
-            Assert.Pass();
+            var checkPath = Path.Combine(options.DestinationPath, "2007", "07");
+            var DirExists = Directory.Exists(checkPath);
 
+            Assert.IsTrue(DirExists);
+
+            var copiedFiles = Directory.EnumerateFiles(checkPath);
+            Assert.That(copiedFiles?.Count(), Is.EqualTo(1));
 
         }
     }

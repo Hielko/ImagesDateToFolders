@@ -18,8 +18,6 @@
             int count = 1;
             var newFilename = filename;
 
-            
-
             while (File.Exists(newFilename))
             {
                 var fi = new FileInfo(filename);

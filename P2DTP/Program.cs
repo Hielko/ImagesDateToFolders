@@ -36,7 +36,7 @@ Console.WriteLine("Paths: ");
 foreach (string path in paths) { Console.Write(path + " "); }
 Console.WriteLine();
 
-var files = Files.GetFiles(paths);
+var files = new Files().GetFiles(paths);
 Console.WriteLine($"Files: {files.Count}");
 
 List<FileAndDate> result = new List<FileAndDate>();

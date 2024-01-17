@@ -18,28 +18,27 @@ namespace P2DTP
                         {
                             if (image.Metadata.ExifProfile != null)
                             {
-                                if (image.Metadata.ExifProfile.TryGetValue(ExifTag.DateTime, out var ExifStringDate))
+                                if (image.Metadata.ExifProfile.TryGetValue(ExifTag.DateTimeOriginal, out var ExifDateString))
                                 {
-                                    if (ExifStringDate != null)
+                                    if (ExifDateString != null)
                                     {
-                                        var correctDate = ExifStringDate?.ToString()?.Substring(0, 10).Replace(":", "/") + ExifStringDate?.ToString()?.Substring(10, 9);
+                                        var correctDate = ExifDateString?.ToString()?.Substring(0, 10).Replace(":", "/") + ExifDateString?.ToString()?.Substring(10, 9);
 
                                         if (DateTime.TryParse(correctDate, out DateTime date))
                                         {
-                                            Console.WriteLine(date);
                                             fileAndDateList.Add(new FileAndDate { DateForNewPath = date, File = file });
                                         }
                                         else
                                         {
-                                            fileAndDateList.Add(new FileAndDate { DateForNewPath = file.CreationTime, File = file });
-                                            // Console.WriteLine("Invalid date " + ExifStringDate.ToString());
+                                            fileAndDateList.Add(new FileAndDate { DateForNewPath = file.LastWriteTimeUtc, File = file });
                                         }
                                     }
                                 }
                             }
                         }
-                    } catch (Exception e)
-                        {  }
+                    }
+                    catch (Exception e)
+                    { }
                 }
             }
         }
