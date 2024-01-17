@@ -6,21 +6,26 @@ namespace Tests
     {
         Options options;
 
+        readonly string solution_dir = Path.GetDirectoryName(Path.GetDirectoryName(TestContext.CurrentContext.TestDirectory));
+        readonly string samplesPath = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName + Path.DirectorySeparatorChar + "samples";
+
         [SetUp]
         public void Setup()
         {
-            options = new Options { };
+            options = new Options { DestinationPath = Path.Combine(solution_dir, "Result") };
+        }
+
+
+        [TearDown]
+        public void TearDown()
+        {
+            Directory.Delete(options.DestinationPath, true);
         }
 
         [Test]
         public void Test1()
         {
-
-            string solution_dir = Path.GetDirectoryName(Path.GetDirectoryName(TestContext.CurrentContext.TestDirectory));
-            var samplesPath = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName + Path.DirectorySeparatorChar + "samples";
-
             string[] paths = new string[1] { samplesPath };
-            options.DestinationPath = Path.Combine(solution_dir, "Result");
 
             var files = new Files().GetFiles(paths);
 
