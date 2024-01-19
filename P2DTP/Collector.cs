@@ -30,6 +30,7 @@ namespace P2DTP
                                         }
                                         else
                                         {
+                                            // No valid date, so take the file date
                                             fileAndDateList.Add(new FileAndDate { DateForNewPath = file.LastWriteTimeUtc, File = file });
                                         }
                                     }
@@ -39,6 +40,11 @@ namespace P2DTP
                     }
                     catch (Exception e)
                     { }
+                }
+                else
+                {
+                    // Not an image, so take the file date
+                    fileAndDateList.Add(new FileAndDate { DateForNewPath = file.LastWriteTimeUtc, File = file });
                 }
             }
         }
