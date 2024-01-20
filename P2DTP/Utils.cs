@@ -1,14 +1,7 @@
-﻿namespace P2DTP
+﻿namespace ImagesDateToFolders
 {
     public class Utils
     {
-        public static bool IsImageExtenstion(string fileName)
-        {
-            var extension = Path.GetExtension(fileName).ToLower();
-            string[] imgExtensions = new string[] { ".jpg", ".jpeg", ".png" };
-            return Array.IndexOf(imgExtensions, extension) > -1;
-        }
-
         public static bool AreFileContentsEqual(string path1, string path2) =>
               File.ReadAllBytes(path1).SequenceEqual(File.ReadAllBytes(path2));
 

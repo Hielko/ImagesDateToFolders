@@ -1,4 +1,4 @@
-﻿namespace P2DTP
+﻿namespace ImagesDateToFolders
 {
     public class Options
     {

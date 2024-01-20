@@ -1,4 +1,4 @@
-﻿using P2DTP;
+﻿using ImagesDateToFolders;
 
 var currentDir = Directory.GetCurrentDirectory();
 

@@ -1,16 +1,27 @@
 ﻿using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Metadata.Profiles.Exif;
 
-namespace P2DTP
+namespace ImagesDateToFolders
 {
     public class Collector
     {
+
+        static bool ImagesWithExifExtenstions(string fileName)
+        {
+            var extension = Path.GetExtension(fileName).ToLower();
+            string[] imgExtensions = new string[] { ".jpg", ".jpeg" };
+            return Array.IndexOf(imgExtensions, extension) > -1;
+        }
+
+
         public Collector(List<FileInfo> files, out List<FileAndDate> fileAndDateList)
         {
             fileAndDateList = new List<FileAndDate>();
+
+            Console.WriteLine($"Start reading exif");
             foreach (FileInfo file in files)
             {
-                if (Utils.IsImageExtenstion(file.FullName))
+                if (ImagesWithExifExtenstions(file.FullName))
                 {
                     try
                     {
@@ -39,7 +50,9 @@ namespace P2DTP
                         }
                     }
                     catch (Exception e)
-                    { }
+                    {
+                        Console.WriteLine($"  Error reading {file.FullName}:  {e.Message}");
+                    }
                 }
                 else
                 {

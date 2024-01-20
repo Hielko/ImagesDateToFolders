@@ -1,9 +1,11 @@
-﻿namespace P2DTP
+﻿namespace ImagesDateToFolders
 {
     public class CopyFiles
     {
         public CopyFiles(List<FileAndDate> fileAndDateList, Options? options)
         {
+
+            Console.WriteLine($"start copying");
             int copyCount = 0;
             int skipCount = 0;
             foreach (var fileAndDate in fileAndDateList)
@@ -21,6 +23,7 @@
                 if (File.Exists(newFilename) && Utils.AreFileContentsEqual(fileAndDate?.File?.FullName, newFilename))
                 {
                     skipCount++;
+                    Console.WriteLine($"  skipping {newFilename}");
                     // discard, do not copy
                 }
                 else
