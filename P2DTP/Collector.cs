@@ -26,6 +26,7 @@ namespace ImagesDateToFolders
                 {
                     try
                     {
+                        bool writeWithFileDate = false;
                         using (Image image = Image.Load(file.FullName))
                         {
                             if (image.Metadata.ExifProfile != null)
@@ -42,18 +43,32 @@ namespace ImagesDateToFolders
                                         }
                                         else
                                         {
-                                            // No valid date, so take the file date
-                                            tempFileAndDateList.Add(new FileAndDate { DateForNewPath = file.LastWriteTimeUtc, File = file });
+                                            writeWithFileDate = true;
                                         }
                                     }
                                 }
+                                else
+                                {
+                                    writeWithFileDate = true;
+                                }
                             }
+                            else
+                            {
+                                writeWithFileDate = true;
+                            }
+                        }
+                        if (writeWithFileDate)
+                        {
+                            tempFileAndDateList.Add(new FileAndDate { DateForNewPath = file.LastWriteTimeUtc, File = file });
                         }
                     }
                     catch (Exception e)
                     {
                         Console.WriteLine($"  Error reading {file.FullName}:  {e.Message}");
                     }
+
+
+
                 }
                 else
                 {

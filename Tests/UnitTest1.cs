@@ -35,12 +35,13 @@ namespace Tests
             new CopyFiles(result, options);
 
             var checkPath = Path.Combine(options.DestinationPath, "2007", "07");
-            var DirExists = Directory.Exists(checkPath);
+            Assert.IsTrue(Directory.Exists(checkPath));
+            Assert.That(Directory.EnumerateFiles(checkPath)?.Count(), Is.EqualTo(1));
 
-            Assert.IsTrue(DirExists);
 
-            var copiedFiles = Directory.EnumerateFiles(checkPath);
-            Assert.That(copiedFiles?.Count(), Is.EqualTo(1));
+            checkPath = Path.Combine(options.DestinationPath, "2006", "10");
+            Assert.IsTrue(Directory.Exists(checkPath));
+            Assert.That(Directory.EnumerateFiles(checkPath)?.Count(), Is.EqualTo(1));
 
         }
     }
