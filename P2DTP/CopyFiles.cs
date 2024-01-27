@@ -1,4 +1,6 @@
-﻿namespace ImagesDateToFolders
+﻿using static ImagesDateToFolders.Extentions;
+
+namespace ImagesDateToFolders
 {
     public class CopyFiles
     {
@@ -8,6 +10,9 @@
             Console.WriteLine($"start copying");
             int copyCount = 0;
             int skipCount = 0;
+            long copiedBytes = 0;
+            long skippedBytes = 0;
+
             foreach (var fileAndDate in fileAndDateList)
             {
                 //  https://www.c-sharpcorner.com/blogs/date-and-time-format-in-c-sharp-programming1
@@ -23,19 +28,20 @@
                 if (File.Exists(newFilename) && Utils.AreFileContentsEqual(fileAndDate?.File?.FullName, newFilename))
                 {
                     skipCount++;
-                    Console.WriteLine($"  skipping {newFilename}");
-                    // discard, do not copy
+                    Console.WriteLine($"  skipping {newFilename}, content is the same as {fileAndDate?.File?.FullName}");
+                    skippedBytes += fileAndDate.File.Length;
                 }
                 else
                 {
+                    copyCount++;
                     newFilename = Utils.WhileExistsFileGetNewName(newPath + Path.DirectorySeparatorChar + fileAndDate?.File?.Name);
                     File.Copy(fileAndDate?.File?.FullName, newFilename);
-                    copyCount++;
+                    copiedBytes += fileAndDate.File.Length;
                 }
             }
 
-            Console.WriteLine($"{copyCount} copied");
-            Console.WriteLine($"{skipCount} skipped");
+            Console.WriteLine($"{copyCount} copied:  {copiedBytes.SizeSuffix()} ");
+            Console.WriteLine($"{skipCount} skipped:  {skippedBytes.SizeSuffix()}  ");
         }
     }
 }

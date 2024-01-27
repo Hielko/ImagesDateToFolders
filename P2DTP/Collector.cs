@@ -16,10 +16,11 @@ namespace ImagesDateToFolders
 
         public Collector(List<FileInfo> files, out List<FileAndDate> fileAndDateList)
         {
-            fileAndDateList = new List<FileAndDate>();
 
+            var tempFileAndDateList = new List<FileAndDate>();
             Console.WriteLine($"Start reading exif");
-            foreach (FileInfo file in files)
+
+            Parallel.ForEach(files, file =>
             {
                 if (ImagesWithExifExtenstions(file.FullName))
                 {
@@ -37,12 +38,12 @@ namespace ImagesDateToFolders
 
                                         if (DateTime.TryParse(correctDate, out DateTime date))
                                         {
-                                            fileAndDateList.Add(new FileAndDate { DateForNewPath = date, File = file });
+                                            tempFileAndDateList.Add(new FileAndDate { DateForNewPath = date, File = file });
                                         }
                                         else
                                         {
                                             // No valid date, so take the file date
-                                            fileAndDateList.Add(new FileAndDate { DateForNewPath = file.LastWriteTimeUtc, File = file });
+                                            tempFileAndDateList.Add(new FileAndDate { DateForNewPath = file.LastWriteTimeUtc, File = file });
                                         }
                                     }
                                 }
@@ -57,9 +58,12 @@ namespace ImagesDateToFolders
                 else
                 {
                     // Not an image, so take the file date
-                    fileAndDateList.Add(new FileAndDate { DateForNewPath = file.LastWriteTimeUtc, File = file });
+                    tempFileAndDateList.Add(new FileAndDate { DateForNewPath = file.LastWriteTimeUtc, File = file });
                 }
-            }
+
+            });
+
+            fileAndDateList = tempFileAndDateList;
         }
     }
 }
