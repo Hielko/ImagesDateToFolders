@@ -38,8 +38,8 @@ namespace Tests
             Assert.IsTrue(Directory.Exists(checkPath));
             Assert.That(Directory.EnumerateFiles(checkPath)?.Count(), Is.EqualTo(1));
 
-
-            checkPath = Path.Combine(options.DestinationPath, "2006", "10");
+            var today = DateTime.Now;
+            checkPath = Path.Combine(options.DestinationPath, today.ToString("yyyy"), today.ToString("MM"));
             Assert.IsTrue(Directory.Exists(checkPath));
             Assert.That(Directory.EnumerateFiles(checkPath)?.Count(), Is.EqualTo(1));
 
