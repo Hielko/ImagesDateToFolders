@@ -19,12 +19,9 @@
                 newFilename = fi.FullName.Substring(0, filename.Length - extenstion.Length) + "(" + count + ")" + extenstion;
                 count++;
             }
-
             return newFilename;
         }
-
     }
-
 
 
     public static class Extentions

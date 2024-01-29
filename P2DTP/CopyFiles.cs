@@ -10,8 +10,8 @@ namespace ImagesDateToFolders
             Console.WriteLine($"start copying");
             int copyCount = 0;
             int skipCount = 0;
-            long copiedBytes = 0;
-            long skippedBytes = 0;
+            long? copiedBytes = 0;
+            long? skippedBytes = 0;
 
             foreach (var fileAndDate in fileAndDateList)
             {
@@ -28,20 +28,20 @@ namespace ImagesDateToFolders
                 if (File.Exists(newFilename) && Utils.AreFileContentsEqual(fileAndDate?.File?.FullName, newFilename))
                 {
                     skipCount++;
+                    skippedBytes += fileAndDate?.File.Length;
                     Console.WriteLine($"  skipping {newFilename}, content is the same as {fileAndDate?.File?.FullName}");
-                    skippedBytes += fileAndDate.File.Length;
                 }
                 else
                 {
                     copyCount++;
+                    copiedBytes += fileAndDate?.File.Length;
                     newFilename = Utils.WhileExistsFileGetNewName(newPath + Path.DirectorySeparatorChar + fileAndDate?.File?.Name);
                     File.Copy(fileAndDate?.File?.FullName, newFilename);
-                    copiedBytes += fileAndDate.File.Length;
                 }
             }
 
-            Console.WriteLine($"{copyCount} copied:  {copiedBytes.SizeSuffix()} ");
-            Console.WriteLine($"{skipCount} skipped:  {skippedBytes.SizeSuffix()}  ");
+            Console.WriteLine($"{copyCount} copied:  {copiedBytes?.SizeSuffix(2)} ");
+            Console.WriteLine($"{skipCount} skipped:  {skippedBytes?.SizeSuffix(2)}  ");
         }
     }
 }
