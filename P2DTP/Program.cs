@@ -1,8 +1,18 @@
 ﻿using ImagesDateToFolders;
+using System.Text;
 
+var stringBuilder = new StringBuilder();
 var currentDir = Directory.GetCurrentDirectory();
 
-Console.WriteLine("");
+using (var consoleWriter = new ConsoleWriter())
+{
+    consoleWriter.WriteEvent += consoleWriter_WriteEvent;
+    consoleWriter.WriteLineEvent += consoleWriter_WriteLineEvent;
+    Console.SetOut(consoleWriter);
+}
+
+
+Console.WriteLine(typeof(Program).Assembly.GetName().Name);
 
 var argOptions = new GetOpt(args);
 var options = new Options();
@@ -42,7 +52,6 @@ new Collector(files, out result);
 new CopyFiles(result, options);
 
 Console.WriteLine($"Done");
-
 
 
 string DateFormats()
@@ -86,5 +95,13 @@ string DateFormats()
 ";
 
     return text;
-
 }
+
+
+
+void consoleWriter_WriteLineEvent(object? sender, ConsoleWriterEventArgs e)
+   => stringBuilder.AppendLine(e.Value);
+
+
+void consoleWriter_WriteEvent(object? sender, ConsoleWriterEventArgs e)
+   => stringBuilder.Append(e.Value);
