@@ -16,5 +16,9 @@
 
             return files;
         }
+
+        public List<FileInfo> GetFiles(string path, string wildcard = "*.*") =>
+            GetFiles(new string[] { path }, wildcard);
+
     }
 }

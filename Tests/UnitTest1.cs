@@ -4,7 +4,7 @@ namespace Tests
 {
     public class Tests
     {
-        Options options;
+        Options? options;
 
         readonly string solution_dir = Path.GetDirectoryName(Path.GetDirectoryName(TestContext.CurrentContext.TestDirectory));
         readonly string samplesPath = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName + Path.DirectorySeparatorChar + "samples";
@@ -19,15 +19,13 @@ namespace Tests
         [TearDown]
         public void TearDown()
         {
-            Directory.Delete(options.DestinationPath, true);
+            Directory.Delete(options?.DestinationPath, true);
         }
 
         [Test]
         public void Test1()
         {
-            string[] paths = new string[1] { samplesPath };
-
-            var files = new Files().GetFiles(paths);
+            var files = new Files().GetFiles(samplesPath);
 
             var result = new List<FileAndDate>();
 

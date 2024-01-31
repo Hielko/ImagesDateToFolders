@@ -33,11 +33,9 @@ if (!argOptions.TryGetValue("-f", out var format))
 options.DateFormat = format;
 
 
-Console.WriteLine("Paths: ");
-foreach (string path in paths) { Console.Write(path + " "); }
-Console.WriteLine();
+Console.WriteLine($"Path: {sourcePath}");
 
-var files = new Files().GetFiles(paths);
+var files = new Files().GetFiles(sourcePath);
 Console.WriteLine($"Files: {files.Count}");
 
 List<FileAndDate> result = new List<FileAndDate>();
