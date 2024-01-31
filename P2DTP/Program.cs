@@ -13,9 +13,6 @@ if (!argOptions.TryGetValue("-s", out var sourcePath))
     Console.WriteLine($"No -s specified, use {currentDir}");
 }
 
-
-string[] paths = new string[] { sourcePath };
-
 if (!argOptions.TryGetValue("-d", out var desination))
 {
     Console.WriteLine("No -d specified, exit");
