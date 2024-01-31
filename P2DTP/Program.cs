@@ -6,8 +6,8 @@ var currentDir = Directory.GetCurrentDirectory();
 
 using (var consoleWriter = new ConsoleWriter())
 {
-    consoleWriter.WriteEvent += consoleWriter_WriteEvent;
-    consoleWriter.WriteLineEvent += consoleWriter_WriteLineEvent;
+    consoleWriter.WriteEvent += (object? sender, ConsoleWriterEventArgs e) => stringBuilder.Append(e.Value);
+    consoleWriter.WriteLineEvent += (object? sender, ConsoleWriterEventArgs e) => stringBuilder.AppendLine(e.Value);
     Console.SetOut(consoleWriter);
 }
 
@@ -98,10 +98,3 @@ string DateFormats()
 }
 
 
-
-void consoleWriter_WriteLineEvent(object? sender, ConsoleWriterEventArgs e)
-   => stringBuilder.AppendLine(e.Value);
-
-
-void consoleWriter_WriteEvent(object? sender, ConsoleWriterEventArgs e)
-   => stringBuilder.Append(e.Value);
