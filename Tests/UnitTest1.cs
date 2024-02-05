@@ -36,7 +36,7 @@ namespace Tests
             {
                 var checkPath = Path.Combine(options.DestinationPath, file.DateForNewPath?.ToString("yyyy"), file.DateForNewPath?.ToString("MM"));
                 Assert.IsTrue(Directory.Exists(checkPath));
-                Assert.That(Directory.EnumerateFiles(checkPath)?.Count(), Is.EqualTo(1));
+                Assert.IsTrue(File.Exists(Path.Combine(checkPath, file.File.Name)));
             });
 
         }
