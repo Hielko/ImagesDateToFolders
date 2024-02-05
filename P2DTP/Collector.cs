@@ -16,64 +16,40 @@ namespace ImagesDateToFolders
 
         public Collector(List<FileInfo> files, out List<FileAndDate> fileAndDateList)
         {
-
             var tempFileAndDateList = new List<FileAndDate>();
             Console.WriteLine($"Start reading exif");
 
             Parallel.ForEach(files, file =>
             {
+                DateTime? useDate = file.LastWriteTimeUtc;
                 if (ImagesWithExifExtenstions(file.FullName))
                 {
                     try
                     {
-                        bool writeWithFileDate = false;
-                        using (Image image = Image.Load(file.FullName))
-                        {
-                            if (image.Metadata.ExifProfile != null)
-                            {
-                                if (image.Metadata.ExifProfile.TryGetValue(ExifTag.DateTimeOriginal, out var ExifDateString))
-                                {
-                                    if (ExifDateString != null)
-                                    {
-                                        var correctDate = ExifDateString?.ToString()?.Substring(0, 10).Replace(":", "/") + ExifDateString?.ToString()?.Substring(10, 9);
+                        using Image image = Image.Load(file.FullName);
 
-                                        if (DateTime.TryParse(correctDate, out DateTime date))
-                                        {
-                                            tempFileAndDateList.Add(new FileAndDate { DateForNewPath = date, File = file });
-                                        }
-                                        else
-                                        {
-                                            writeWithFileDate = true;
-                                        }
-                                    }
-                                }
-                                else
-                                {
-                                    writeWithFileDate = true;
-                                }
-                            }
-                            else
-                            {
-                                writeWithFileDate = true;
-                            }
-                        }
-                        if (writeWithFileDate)
+                        if (image.Metadata.ExifProfile != null)
                         {
-                            tempFileAndDateList.Add(new FileAndDate { DateForNewPath = file.LastWriteTimeUtc, File = file });
+                            if (image.Metadata.ExifProfile.TryGetValue(ExifTag.DateTimeOriginal, out var ExifDateString) && ExifDateString != null)
+                            {
+                                var correctDate = ExifDateString?.ToString()?.Substring(0, 10).Replace(":", "/") + ExifDateString?.ToString()?.Substring(10, 9);
+                                if (DateTime.TryParse(correctDate, out DateTime date))
+                                {
+                                    useDate = date;
+                                }
+                            }
                         }
                     }
                     catch (Exception e)
                     {
                         Console.WriteLine($"  Error reading {file.FullName}:  {e.Message}");
+                        useDate = null; 
                     }
-
-
-
                 }
-                else
+
+                if (useDate != null)
                 {
-                    // Not an image, so take the file date
-                    tempFileAndDateList.Add(new FileAndDate { DateForNewPath = file.LastWriteTimeUtc, File = file });
+                    tempFileAndDateList.Add(new FileAndDate { DateForNewPath = useDate, File = file });
                 }
 
             });

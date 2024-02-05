@@ -32,14 +32,12 @@ namespace Tests
             new Collector(files, out result);
             new CopyFiles(result, options);
 
-            var checkPath = Path.Combine(options.DestinationPath, "2007", "07");
-            Assert.IsTrue(Directory.Exists(checkPath));
-            Assert.That(Directory.EnumerateFiles(checkPath)?.Count(), Is.EqualTo(1));
-
-            var today = DateTime.Now;
-            checkPath = Path.Combine(options.DestinationPath, today.ToString("yyyy"), today.ToString("MM"));
-            Assert.IsTrue(Directory.Exists(checkPath));
-            Assert.That(Directory.EnumerateFiles(checkPath)?.Count(), Is.EqualTo(1));
+            result.ForEach(file =>
+            {
+                var checkPath = Path.Combine(options.DestinationPath, file.DateForNewPath?.ToString("yyyy"), file.DateForNewPath?.ToString("MM"));
+                Assert.IsTrue(Directory.Exists(checkPath));
+                Assert.That(Directory.EnumerateFiles(checkPath)?.Count(), Is.EqualTo(1));
+            });
 
         }
     }

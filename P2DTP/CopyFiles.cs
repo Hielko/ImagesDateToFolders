@@ -17,8 +17,8 @@ namespace ImagesDateToFolders
             {
                 //  https://www.c-sharpcorner.com/blogs/date-and-time-format-in-c-sharp-programming1
 
-                var dateString = fileAndDate.DateForNewPath.ToString(options?.DateFormat);
-                var stringParts = dateString.Split(' ');
+                var dateString = fileAndDate.DateForNewPath?.ToString(options?.DateFormat);
+                var stringParts = dateString?.Split(' ');
                 var paths = String.Join(Path.DirectorySeparatorChar, stringParts);
                 var newPath = Path.Combine(options?.DestinationPath, paths);
                 Directory.CreateDirectory(newPath);

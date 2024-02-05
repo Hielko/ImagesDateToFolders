@@ -4,6 +4,6 @@
     {
         public FileInfo? File { get; set; }
 
-        public DateTime DateForNewPath { get; set; }
+        public DateTime? DateForNewPath { get; set; }
     }
 }
